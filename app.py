@@ -123,28 +123,153 @@ def admin_dashboard():
 
 @app.route('/admin/products')
 def admin_products():
+
     category = request.args.get('category')
-    product_name = request.args.get('searched')
-    page = int(request.args.get('page',1))
+    search = request.args.get('search')
 
+    page = int(request.args.get('page', 1))
     per_page = 7
-    status,products = AdminQueries.getAllProducts(product_name=product_name,
-                                                  category = category,
-                                                  page_no=page,
-                                                  per_page=per_page)
-    total = len(products)
-    total_pages= len(products) // per_page + 1
-    return render_template('admin/products.html',
-                           products = products,
-                           total_pages = total_pages,
-                           page = page,
-                           total = total,
-                           per_page=per_page)
 
-@app.route('/admin/products/<int:product_id>/edit-product')
+    # Get products for current page
+    status, products = AdminQueries.getAllProducts(
+        product_name=search,
+        category=category,
+        page_no=page,
+        per_page=per_page
+    )
+
+    if not status:
+        flash("Unable to fetch products", 'err')
+        products = []
+
+    # Get total products count
+    count_status, total = AdminQueries.getProductsCount(
+        product_name=search,
+        category=category
+    )
+
+    if not count_status:
+        total = len(products)
+
+    # Calculate total pages
+    total_pages = (total + per_page - 1) // per_page
+
+    # Get categories
+    _, categories = AdminQueries.getAllCategories()
+
+    return render_template(
+        'admin/products.html',
+        products=products,
+        categories=categories,
+        category=category,
+        search=search or '',
+        status='',
+        stock='',
+        min_price=None,
+        max_price=None,
+        total_pages=total_pages,
+        page=page,
+        total=total,
+        per_page=per_page
+    )
+@app.route('/admin/products/<int:product_id>/edit-product',
+           methods=['GET', 'POST'])
 def admin_edit_product(product_id):
-    pass
 
+    # ================= GET METHOD =================
+    if request.method == 'GET':
+
+        # Get existing product details
+        status, product = AdminQueries.getAllProducts(
+            product_id=product_id
+        )
+
+        if not status or not product:
+            flash("Product not found", 'err')
+            return redirect(url_for('admin_products'))
+
+        # Get all categories
+        category_status, categories = AdminQueries.getAllCategories()
+
+        if not category_status:
+            flash("Unable to fetch categories", 'err')
+            return redirect(url_for('admin_products'))
+
+        return render_template(
+            'admin/edit_product.html',
+            product=product,
+            categories=categories
+        )
+
+    # ================= POST METHOD =================
+    if request.method == 'POST':
+
+        # Get form data
+        product_name = request.form.get('name')
+        category = request.form.get('category')
+        price = request.form.get('price')
+        stock = request.form.get('stock')
+        description = request.form.get('description')
+
+        # Get existing product details
+        status, product = AdminQueries.getAllProducts(
+            product_id=product_id
+        )
+
+        if not status or not product:
+            flash("Product not found", 'err')
+            return redirect(url_for('admin_products'))
+
+        # Keep existing image details
+        img_name = product['imgname']
+        img_path = product['storedpath']
+
+        # Get uploaded image
+        image = request.files.get('image')
+
+        # Check new image uploaded or not
+        if image and image.filename:
+
+            secure_img_name = secure_filename(image.filename)
+
+            unique_img_name = str(uuid.uuid4()) + "_" + secure_img_name
+
+            img_path = os.path.join(
+                'static',
+                'images',
+                'products',
+                unique_img_name
+            )
+
+            image.save(img_path)
+
+            img_name = unique_img_name
+
+        # Prepare product data
+        product_data = (
+            product_name,
+            description,
+            category,
+            price,
+            stock,
+            img_name,
+            img_path
+        )
+
+        # Update product in database
+        status, msg = AdminQueries.updateProductRecord(
+            product_id=product_id,
+            product_data=product_data
+        )
+
+        if status:
+            flash("Product Updated Successfully", 'msg')
+        else:
+            flash(msg, 'err')
+
+        return redirect(url_for('admin_products'))
+
+        
 @app.route('/admin/products/<int:product_id>/deactivate')
 def admin_deactivate_product(product_id):
     pass
@@ -154,7 +279,8 @@ def admin_deactivate_product(product_id):
 @app.route('/admin/products/add-products', methods=['GET', 'POST'])
 def admin_add_product():
     if request.method == 'GET':
-        return render_template('admin/add_product.html')
+        _, categories = AdminQueries.getAllCategories()
+        return render_template('admin/add_product.html',categories = categories)
 
     if request.method == 'POST':
 
@@ -166,19 +292,47 @@ def admin_add_product():
         stock = request.form.get('stock')
         description = request.form.get('description')
         image = request.files.get('image')
+        
 
+
+        # Check new category
+        if new_category and new_category.strip():
+            category = new_category.strip()
+
+        # Validate category
+        if not category:
+            flash("Please select or enter a category", 'err')
+            return redirect(url_for('admin_add_product'))
+
+        # Save image
         img_name = image.filename
         secure_img_name = secure_filename(img_name)
         unique_img_name = str(uuid.uuid1()) + "_" + secure_img_name
 
-        # save img
-        img_path = os.path.join('static','images','products',unique_img_name)
+        img_path = os.path.join(
+            'static', 'images', 'products', unique_img_name
+        )
 
         image.save(img_path)
-        data = (product_name,description,category,price,stock, unique_img_name,img_path)
-        status,msg= AdminQueries.insertProductRecord(product_data=data)
-        flash(msg,'msg' if status == True else 'err')
+
+        # Prepare product data
+        data = (
+            product_name,
+            description,
+            category,
+            price,
+            stock,
+            unique_img_name,
+            img_path
+        )
+
+        # Insert product
+        status, msg = AdminQueries.insertProductRecord(product_data=data)
+
+        flash(msg, 'msg' if status else 'err')
+
         return redirect(url_for('admin_products'))
+        
 
         
 @app.route('/admin/categories')
@@ -196,7 +350,19 @@ def admin_orders():
 
 @app.route('/admin/users')
 def admin_users():
-    return render_template('admin/users.html')
+    _, users = AdminQueries.getAllUsers()
+    return render_template('admin/users.html', users=users)
+
+# user details
+@app.route('/admin/users/<int:user_id>/details')
+def admin_user_details(user_id):
+    pass
+
+# user details
+@app.route('/admin/users/<int:user_id>/edit')
+def admin_edit_user(user_id):
+    pass
+
 
 # Logout Route
 @app.route('/logout')

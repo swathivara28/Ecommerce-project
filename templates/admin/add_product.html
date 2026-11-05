@@ -53,19 +53,15 @@
 
             <select id="category" name="category">
 
-                <option value="">
-                    Select Existing Category
-                </option>
+    <option value="">Select Existing Category</option>
 
-                {% for category in categories %}
+    {% for category in categories %}
+        <option value="{{ category['category'] }}">
+            {{ category['category'] }}
+        </option>
+    {% endfor %}
 
-                <option value="{{ category[0] }}">
-                    {{ category[0] }}
-                </option>
-
-                {% endfor %}
-
-            </select>
+</select>
 
         </div>
 
