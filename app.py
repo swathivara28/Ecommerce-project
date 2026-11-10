@@ -1,6 +1,6 @@
 from flask import Flask,redirect,render_template,url_for,session,request,flash
 
-from database import createTables,AuthQueries,AdminQueries
+from database import createTables,AuthQueries,AdminQueries,UserQueries
 import bcrypt
 from werkzeug.utils import secure_filename
 import os
@@ -100,16 +100,135 @@ def login():
             return redirect(url_for('products'))
 
 
-    
-
-
-
 #========================================================
 #                   User Routes
 #========================================================
 @app.route('/products')
 def products():
-    return "User Dashboard"
+    _, products = AdminQueries.getAllProducts()
+    _, categories = AdminQueries.getAllCategories()
+    return render_template('user/products.html',products=products,categories=categories)
+
+@app.route('/products/<int:product_id>/details')
+def product_details(product_id):
+    _, product = AdminQueries.getAllProducts(product_id = product_id)
+    return render_template('user/product_details.html',product=product)
+    
+
+
+
+@app.route('/cart')
+def cart():
+
+    if 'id' not in session:
+        return redirect(url_for('login'))
+
+    status, data = UserQueries.getCartItems(
+        userid=session['id']
+    )
+
+    if status:
+
+        subtotal = sum(
+            float(item['subtotal']) for item in data
+        )
+
+        shipping = subtotal * 0.0001
+
+        total = subtotal + shipping
+
+        return render_template(
+            'user/cart.html',
+            cart_items=data,
+            subtotal=subtotal,
+            shipping=shipping,
+            total=total
+        )
+
+    flash(data, 'err')
+    return redirect(url_for('products'))
+
+@app.route('/products/<int:product_id>/add-to-cart', methods=['POST'])
+def add_to_cart(product_id):
+
+    if 'id' not in session:
+        return redirect(url_for('login'))
+
+    quantity = int(request.form.get('quantity', 1))
+
+    status, msg = UserQueries.addCartItem(
+        product_id=product_id,
+        userid=session['id'],
+        quantity=quantity
+    )
+
+    flash(msg, 'msg' if status else 'err')
+
+    return redirect(url_for('products'))
+
+
+@app.route('/cart/update/<int:cartid>', methods=['POST'])
+def update_cart_quantity(cartid):
+
+    if 'id' not in session:
+        return redirect(url_for('login'))
+
+    quantity = int(request.form.get('quantity', 1))
+
+    # if quantity < 1:
+    #     flash('Quantity must be at least 1', 'err')
+    #     return redirect(url_for('cart'))
+
+    status, msg = UserQueries.updateCartQuantity(
+        cartid=cartid,
+        userid=session['id'],
+        quantity=quantity
+    )
+
+    flash(msg, 'msg' if status else 'err')
+
+    return redirect(url_for('cart'))
+
+# Remove cart item
+@app.route('/cart/<int:cartid>/remove', methods = ['POST'])
+def remove_cart_item(cartid):
+    if 'id' not in session:
+        return redirect(url_for('login'))
+    status, msg = UserQueries.deleteCartItem(cartid=cartid)
+    flash(msg, 'msg' if status else 'err')
+    return redirect('/cart')
+
+# checkout
+@app.route('/checkout', methods = ['GET','POST'])
+def checkout():
+    if request.method == 'GET':
+        _,items = UserQueries.getCartItems(userid=session['id'])
+        # print(items)
+        sub_total = sum([item['subtotal'] for item in items])
+        shipping = sub_total * 0.01
+            
+        return render_template('user/checkout.html', cart_items = items,
+                                subtotal = sub_total,
+                                shipping = shipping,
+                                total = sub_total + shipping)
+
+
+@app.context_processor
+def cart_count():
+
+    count = 0
+
+    if 'id' in session:
+
+        status, data = UserQueries.getCartCount(
+            userid=session['id']
+        )
+
+        if status:
+            count = data
+
+    return dict(cart_count=count)
+
 
 
 
@@ -120,7 +239,7 @@ def products():
 def admin_dashboard():
     return render_template('admin/dashboard.html')
 
-
+# admin products route
 @app.route('/admin/products')
 def admin_products():
 
@@ -172,6 +291,8 @@ def admin_products():
         total=total,
         per_page=per_page
     )
+
+# admin edit-product route
 @app.route('/admin/products/<int:product_id>/edit-product',
            methods=['GET', 'POST'])
 def admin_edit_product(product_id):
@@ -269,13 +390,13 @@ def admin_edit_product(product_id):
 
         return redirect(url_for('admin_products'))
 
-        
+# admin deactivate route        
 @app.route('/admin/products/<int:product_id>/deactivate')
 def admin_deactivate_product(product_id):
     pass
 
 
-
+# admin add-product route
 @app.route('/admin/products/add-products', methods=['GET', 'POST'])
 def admin_add_product():
     if request.method == 'GET':
@@ -292,9 +413,6 @@ def admin_add_product():
         stock = request.form.get('stock')
         description = request.form.get('description')
         image = request.files.get('image')
-        
-
-
         # Check new category
         if new_category and new_category.strip():
             category = new_category.strip()
@@ -325,7 +443,6 @@ def admin_add_product():
             unique_img_name,
             img_path
         )
-
         # Insert product
         status, msg = AdminQueries.insertProductRecord(product_data=data)
 
@@ -334,11 +451,11 @@ def admin_add_product():
         return redirect(url_for('admin_products'))
         
 
-        
+# admin categories route        
 @app.route('/admin/categories')
 def admin_category():
     pass
-
+# admin orders route
 @app.route('/admin/orders')
 def admin_orders():
     total_pages = 4
@@ -348,17 +465,18 @@ def admin_orders():
                            total = 10,
                            per_page = 7)
 
+# admin users route
 @app.route('/admin/users')
 def admin_users():
     _, users = AdminQueries.getAllUsers()
     return render_template('admin/users.html', users=users)
 
-# user details
+# admin user details
 @app.route('/admin/users/<int:user_id>/details')
 def admin_user_details(user_id):
     pass
 
-# user details
+# user edit details
 @app.route('/admin/users/<int:user_id>/edit')
 def admin_edit_user(user_id):
     pass

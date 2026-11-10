@@ -1,4 +1,4 @@
-```html
+
 {% extends "base.html" %}
 
 {% block title %}Shopping Cart | ShopZone{% endblock %}
@@ -31,11 +31,11 @@
                     {% if item.storedpath %}
 
                     <img
-                        src="{{ url_for('static', 
-                        filename=item.storedpath.replace('\\', '/').replace('static/', '')) }}"
+                        src="{{ url_for('static', filename=item.storedpath.replace('\\', '/').replace('static/', '')) }}"
                         alt="{{ item.productname }}"
                         class="product-image"
-                        >
+                    >
+
                     {% else %}
 
                     <div class="no-image">
@@ -45,7 +45,6 @@
                     {% endif %}
 
                 </div>
-
 
                 <div class="cart-item-details">
 
@@ -61,25 +60,25 @@
 
                 </div>
 
-
                 <div class="cart-item-quantity">
 
                     <form
                         method="POST"
-                        action="{{ url_for('update_cart_quantity', cartid=item.cartid)}}"
+                        action="{{ url_for('update_cart_quantity', cartid=item.cartid) }}"
                     >
 
-                        <label for="quantity-{{ item.product_id }}">
+                        <label for="quantity-{{ item.productid }}">
                             Quantity
                         </label>
 
                         <input
                             type="number"
-                            id="quantity-{{ item.product_id }}"
+                            id="quantity-{{ item.productid }}"
                             name="quantity"
                             value="{{ item.quantity }}"
                             min="1"
                             max="{{ item.stock }}"
+                            required
                         >
 
                         <button type="submit">
@@ -90,33 +89,26 @@
 
                 </div>
 
-
                 <div class="cart-item-subtotal">
 
                     <span>Subtotal</span>
 
                     <strong>
-                        ₹{{ item.subtotal }}
+                        ₹{{ "%.2f"|format(item.subtotal) }}
                     </strong>
 
                 </div>
 
-
                 <div class="cart-item-remove">
 
                     <form
-                        method="POST"
-                        action="#"
-                    >
-
-                        <button
-                            type="submit"
-                            class="btn-remove"
-                        >
-                            Remove
-                        </button>
-
-                    </form>
+    method="POST"
+    action="{{ url_for('remove_cart_item', cartid=item.cartid) }}"
+>
+    <button type="submit" class="btn-remove">
+        Remove
+    </button>
+</form>
 
                 </div>
 
@@ -125,7 +117,6 @@
             {% endfor %}
 
         </div>
-
 
         <div class="cart-summary">
 
@@ -138,22 +129,25 @@
 
             <div class="summary-row">
                 <span>Subtotal</span>
-                <span>₹{{ subtotal }}</span>
+                <span>₹{{ "%.2f"|format(subtotal) }}</span>
             </div>
 
             <div class="summary-row">
-                <span>Shipping(0.01% on total)</span>
-                <span>₹{{ shipping }}</span>
+                <span>Shipping (0.01% on total)</span>
+                <span>₹{{ "%.2f"|format(shipping) }}</span>
             </div>
 
             <div class="summary-total">
                 <span>Total</span>
-                <strong>₹{{ total }}</strong>
+
+                <strong>
+                    ₹{{ "%.2f"|format(total) }}
+                </strong>
             </div>
 
             <a
-                href="{{ url_for('checkout') }}"
-                class="btn btn-primary checkout-btn"
+                href="{{ url_for('logout') }}"
+                class="btn btn-primary logout-btn"
             >
                 Proceed to Checkout
             </a>
@@ -193,4 +187,3 @@
 </div>
 
 {% endblock %}
-

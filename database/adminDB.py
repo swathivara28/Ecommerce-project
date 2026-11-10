@@ -183,7 +183,7 @@ class AdminQueries:
         cursor = db_config = None
         try:
             db_config = DatabaseConnection()
-            cursor = db_config.cursor(dictionary=True)
+            cursor = db_config.cursor()
     
             query = """
                 SELECT DISTINCT category
