@@ -1,4 +1,4 @@
-```html
+
 {% extends "base.html" %}
 
 {% block title %}Checkout | ShopZone{% endblock %}
@@ -23,6 +23,8 @@
 
             <form method="POST" action="{{ url_for('checkout') }}">
 
+                <!-- Delivery Address -->
+
                 <div class="checkout-card">
 
                     <h2>Delivery Address</h2>
@@ -36,7 +38,6 @@
                                 type="text"
                                 id="name"
                                 name="name"
-                                value=""
                                 required
                             >
                         </div>
@@ -48,7 +49,8 @@
                                 type="text"
                                 id="phone"
                                 name="phone"
-                                value=""
+                                pattern="[0-9]{10}"
+                                maxlength="10"
                                 required
                             >
                         </div>
@@ -57,9 +59,7 @@
 
                     <div class="form-group">
 
-                        <label for="address">
-                            Address
-                        </label>
+                        <label for="address">Address</label>
 
                         <textarea
                             id="address"
@@ -79,7 +79,6 @@
                                 type="text"
                                 id="city"
                                 name="city"
-                                value=""
                                 required
                             >
                         </div>
@@ -91,7 +90,6 @@
                                 type="text"
                                 id="state"
                                 name="state"
-                                value=""
                                 required
                             >
                         </div>
@@ -103,7 +101,8 @@
                                 type="text"
                                 id="pincode"
                                 name="pincode"
-                                value=""
+                                pattern="[0-9]{6}"
+                                maxlength="6"
                                 required
                             >
                         </div>
@@ -112,6 +111,8 @@
 
                 </div>
 
+
+                <!-- Payment Method -->
 
                 <div class="checkout-card">
 
@@ -124,8 +125,9 @@
                             <input
                                 type="radio"
                                 name="payment_method"
-                                value="COD"
+                                value="cod"
                                 checked
+                                required
                             >
 
                             <div>
@@ -141,7 +143,8 @@
                             <input
                                 type="radio"
                                 name="payment_method"
-                                value="RAZORPAY"
+                                value="razorpay"
+                                required
                             >
 
                             <div>
@@ -156,6 +159,8 @@
                 </div>
 
 
+                <!-- Place Order -->
+
                 <button
                     type="submit"
                     class="btn btn-primary place-order-btn"
@@ -167,6 +172,8 @@
 
         </div>
 
+
+        <!-- Order Summary -->
 
         <div class="checkout-summary">
 
@@ -219,4 +226,3 @@
 </div>
 
 {% endblock %}
-

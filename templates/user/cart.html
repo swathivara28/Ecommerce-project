@@ -1,4 +1,4 @@
-
+```html
 {% extends "base.html" %}
 
 {% block title %}Shopping Cart | ShopZone{% endblock %}
@@ -102,13 +102,15 @@
                 <div class="cart-item-remove">
 
                     <form
-    method="POST"
-    action="{{ url_for('remove_cart_item', cartid=item.cartid) }}"
->
-    <button type="submit" class="btn-remove">
-        Remove
-    </button>
-</form>
+                        method="POST"
+                        action="{{ url_for('remove_cart_item', cartid=item.cartid) }}"
+                    >
+
+                        <button type="submit" class="btn-remove">
+                            Remove
+                        </button>
+
+                    </form>
 
                 </div>
 
@@ -146,8 +148,8 @@
             </div>
 
             <a
-                href="{{ url_for('logout') }}"
-                class="btn btn-primary logout-btn"
+                href="{{ url_for('checkout') }}"
+                class="btn btn-primary checkout-btn"
             >
                 Proceed to Checkout
             </a>
@@ -187,3 +189,4 @@
 </div>
 
 {% endblock %}
+```

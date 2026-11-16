@@ -1,0 +1,292 @@
+[2026-11-16 14:55:00,287] - INFO: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+[2026-11-16 14:55:00,287] - INFO: Press CTRL+C to quit
+[2026-11-16 14:55:00,290] - INFO:  * Restarting with stat
+[2026-11-16 14:55:01,181] - WARNING:  * Debugger is active!
+[2026-11-16 14:55:01,184] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 14:57:03,637] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:03] "GET / HTTP/1.1" 200 -
+[2026-11-16 14:57:03,700] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:03] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 14:57:03,788] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:03] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-11-16 14:57:23,116] - INFO: User in register page
+[2026-11-16 14:57:23,130] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:23] "GET /register HTTP/1.1" 200 -
+[2026-11-16 14:57:23,140] - INFO: 127.0.0.1 - - [16/Nov/2026 14:57:23] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 14:59:23,818] - WARNING: swathivara2@gmail.com Email Already Exists
+[2026-11-16 14:59:23,819] - INFO: 127.0.0.1 - - [16/Nov/2026 14:59:23] "POST /register HTTP/1.1" 302 -
+[2026-11-16 14:59:23,822] - INFO: User in register page
+[2026-11-16 14:59:23,823] - INFO: 127.0.0.1 - - [16/Nov/2026 14:59:23] "GET /register HTTP/1.1" 200 -
+[2026-11-16 14:59:23,838] - INFO: 127.0.0.1 - - [16/Nov/2026 14:59:23] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:01:40,080] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:01:40,259] - INFO:  * Restarting with stat
+[2026-11-16 15:01:41,298] - WARNING:  * Debugger is active!
+[2026-11-16 15:01:41,302] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:01:45,472] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:01:45,527] - INFO:  * Restarting with stat
+[2026-11-16 15:01:46,367] - WARNING:  * Debugger is active!
+[2026-11-16 15:01:46,370] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:01:47,463] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:01:47,607] - INFO:  * Restarting with stat
+[2026-11-16 15:01:48,391] - WARNING:  * Debugger is active!
+[2026-11-16 15:01:48,395] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:01:49,471] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:01:49,532] - INFO:  * Restarting with stat
+[2026-11-16 15:01:50,286] - WARNING:  * Debugger is active!
+[2026-11-16 15:01:50,289] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:02:02,643] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:02:02,721] - INFO:  * Restarting with stat
+[2026-11-16 15:02:03,497] - WARNING:  * Debugger is active!
+[2026-11-16 15:02:03,500] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:02:41,356] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:02:41,471] - INFO:  * Restarting with stat
+[2026-11-16 15:02:42,397] - WARNING:  * Debugger is active!
+[2026-11-16 15:02:42,401] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:02:44,510] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:02:44,614] - INFO:  * Restarting with stat
+[2026-11-16 15:02:45,576] - WARNING:  * Debugger is active!
+[2026-11-16 15:02:45,579] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:02:47,674] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:02:47,732] - INFO:  * Restarting with stat
+[2026-11-16 15:02:48,444] - WARNING:  * Debugger is active!
+[2026-11-16 15:02:48,449] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:02:49,540] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:02:49,629] - INFO:  * Restarting with stat
+[2026-11-16 15:02:50,544] - WARNING:  * Debugger is active!
+[2026-11-16 15:02:50,549] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:02,894] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:02,973] - INFO:  * Restarting with stat
+[2026-11-16 15:03:03,930] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:03,934] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:16,232] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:16,398] - INFO:  * Restarting with stat
+[2026-11-16 15:03:17,429] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:17,434] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:21,612] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:21,710] - INFO:  * Restarting with stat
+[2026-11-16 15:03:22,795] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:22,802] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:23,879] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:23,961] - INFO:  * Restarting with stat
+[2026-11-16 15:03:24,842] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:24,845] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:25,915] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:25,975] - INFO:  * Restarting with stat
+[2026-11-16 15:03:26,857] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:26,862] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:27,932] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:28,005] - INFO:  * Restarting with stat
+[2026-11-16 15:03:28,693] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:28,699] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:30,805] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:30,899] - INFO:  * Restarting with stat
+[2026-11-16 15:03:31,735] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:31,738] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:33,841] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:33,923] - INFO:  * Restarting with stat
+[2026-11-16 15:03:34,810] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:34,814] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:36,915] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:36,991] - INFO:  * Restarting with stat
+[2026-11-16 15:03:37,919] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:37,922] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:46,164] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:46,219] - INFO:  * Restarting with stat
+[2026-11-16 15:03:47,090] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:47,097] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:54,330] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:54,389] - INFO:  * Restarting with stat
+[2026-11-16 15:03:55,258] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:55,262] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:56,358] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:56,519] - INFO:  * Restarting with stat
+[2026-11-16 15:03:57,257] - WARNING:  * Debugger is active!
+[2026-11-16 15:03:57,262] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:03:59,376] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:03:59,460] - INFO:  * Restarting with stat
+[2026-11-16 15:04:00,388] - WARNING:  * Debugger is active!
+[2026-11-16 15:04:00,395] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:04:02,511] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:04:02,584] - INFO:  * Restarting with stat
+[2026-11-16 15:04:03,360] - WARNING:  * Debugger is active!
+[2026-11-16 15:04:03,364] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:04:04,438] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:04:04,507] - INFO:  * Restarting with stat
+[2026-11-16 15:04:05,208] - WARNING:  * Debugger is active!
+[2026-11-16 15:04:05,211] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:04:10,354] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:04:10,423] - INFO:  * Restarting with stat
+[2026-11-16 15:04:11,082] - WARNING:  * Debugger is active!
+[2026-11-16 15:04:11,087] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:04:13,167] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:04:13,266] - INFO:  * Restarting with stat
+[2026-11-16 15:04:14,247] - WARNING:  * Debugger is active!
+[2026-11-16 15:04:14,251] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:04:16,359] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:04:16,413] - INFO:  * Restarting with stat
+[2026-11-16 15:04:17,175] - WARNING:  * Debugger is active!
+[2026-11-16 15:04:17,179] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:06:28,014] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:06:28,111] - INFO:  * Restarting with stat
+[2026-11-16 15:06:29,028] - WARNING:  * Debugger is active!
+[2026-11-16 15:06:29,033] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:06:33,186] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:06:33,257] - INFO:  * Restarting with stat
+[2026-11-16 15:06:34,152] - WARNING:  * Debugger is active!
+[2026-11-16 15:06:34,156] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:06:35,234] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:06:35,346] - INFO:  * Restarting with stat
+[2026-11-16 15:06:36,032] - WARNING:  * Debugger is active!
+[2026-11-16 15:06:36,035] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:06:43,225] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:06:43,301] - INFO:  * Restarting with stat
+[2026-11-16 15:06:44,057] - WARNING:  * Debugger is active!
+[2026-11-16 15:06:44,060] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:06:45,135] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:06:45,321] - INFO:  * Restarting with stat
+[2026-11-16 15:06:46,409] - WARNING:  * Debugger is active!
+[2026-11-16 15:06:46,412] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:06:51,580] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:06:51,658] - INFO:  * Restarting with stat
+[2026-11-16 15:06:52,517] - WARNING:  * Debugger is active!
+[2026-11-16 15:06:52,521] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:06:53,595] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:06:53,655] - INFO:  * Restarting with stat
+[2026-11-16 15:06:54,392] - WARNING:  * Debugger is active!
+[2026-11-16 15:06:54,395] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:06:57,519] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:06:57,613] - INFO:  * Restarting with stat
+[2026-11-16 15:06:58,448] - WARNING:  * Debugger is active!
+[2026-11-16 15:06:58,451] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:07:02,608] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:07:02,734] - INFO:  * Restarting with stat
+[2026-11-16 15:07:03,571] - WARNING:  * Debugger is active!
+[2026-11-16 15:07:03,575] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:07:15,937] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:07:15,991] - INFO:  * Restarting with stat
+[2026-11-16 15:07:16,617] - WARNING:  * Debugger is active!
+[2026-11-16 15:07:16,621] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:07:28,947] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:07:29,084] - INFO:  * Restarting with stat
+[2026-11-16 15:07:29,999] - WARNING:  * Debugger is active!
+[2026-11-16 15:07:30,005] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:07:32,117] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:07:32,173] - INFO:  * Restarting with stat
+[2026-11-16 15:07:32,969] - WARNING:  * Debugger is active!
+[2026-11-16 15:07:32,973] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:07:36,099] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:07:36,208] - INFO:  * Restarting with stat
+[2026-11-16 15:07:37,088] - WARNING:  * Debugger is active!
+[2026-11-16 15:07:37,092] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:07:40,215] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:07:40,272] - INFO:  * Restarting with stat
+[2026-11-16 15:07:41,122] - WARNING:  * Debugger is active!
+[2026-11-16 15:07:41,127] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:07:52,517] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:07:52,577] - INFO:  * Restarting with stat
+[2026-11-16 15:07:53,354] - WARNING:  * Debugger is active!
+[2026-11-16 15:07:53,359] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:08:02,600] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:08:02,666] - INFO:  * Restarting with stat
+[2026-11-16 15:08:03,452] - WARNING:  * Debugger is active!
+[2026-11-16 15:08:03,458] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:08:08,604] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:08:08,680] - INFO:  * Restarting with stat
+[2026-11-16 15:08:09,465] - WARNING:  * Debugger is active!
+[2026-11-16 15:08:09,470] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:08:10,568] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:08:10,668] - INFO:  * Restarting with stat
+[2026-11-16 15:08:11,579] - WARNING:  * Debugger is active!
+[2026-11-16 15:08:11,582] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:08:12,658] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:08:12,741] - INFO:  * Restarting with stat
+[2026-11-16 15:08:13,859] - WARNING:  * Debugger is active!
+[2026-11-16 15:08:13,863] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:08:15,953] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:08:16,021] - INFO:  * Restarting with stat
+[2026-11-16 15:08:16,845] - WARNING:  * Debugger is active!
+[2026-11-16 15:08:16,849] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:08:19,987] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:08:20,061] - INFO:  * Restarting with stat
+[2026-11-16 15:08:21,023] - WARNING:  * Debugger is active!
+[2026-11-16 15:08:21,026] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:08:30,369] - INFO:  * Detected change in 'C:\\Users\\uc\\Desktop\\flask\\E commerce project\\app.py', reloading
+[2026-11-16 15:08:30,486] - INFO:  * Restarting with stat
+[2026-11-16 15:08:31,601] - WARNING:  * Debugger is active!
+[2026-11-16 15:08:31,605] - INFO:  * Debugger PIN: 619-173-069
+[2026-11-16 15:08:59,493] - INFO: User in loggin page
+[2026-11-16 15:08:59,539] - INFO: 127.0.0.1 - - [16/Nov/2026 15:08:59] "GET /login HTTP/1.1" 200 -
+[2026-11-16 15:08:59,595] - INFO: 127.0.0.1 - - [16/Nov/2026 15:08:59] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:09:08,872] - INFO: user1 user entering into admin products page
+[2026-11-16 15:09:08,873] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "POST /login HTTP/1.1" 302 -
+[2026-11-16 15:09:08,940] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /products HTTP/1.1" 200 -
+[2026-11-16 15:09:08,957] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:09:08,958] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/images/products/5809fce7-d864-11f1-849d-74782771fe58_saved-image-file_000000002fec821196721fd26fc076f9.jpg HTTP/1.1" 304 -
+[2026-11-16 15:09:08,960] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:09:08,966] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/images/products/b4f57bf6-d865-11f1-8dd4-74782771fe58_saved-image-file_000000005298821195dc143d9e0ec33c.jpg HTTP/1.1" 304 -
+[2026-11-16 15:09:08,969] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/images/products/930e9de3-d864-11f1-8200-74782771fe58_saved-image-file_0000000026608211a1cdaa9f036fd953.jpg HTTP/1.1" 304 -
+[2026-11-16 15:09:08,973] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/images/products/e75bdde3-d864-11f1-bf2e-74782771fe58_saved-image-file_00000000d2b08211b3705b490a6c8f01.jpg HTTP/1.1" 304 -
+[2026-11-16 15:09:08,975] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/images/products/ded17232-d865-11f1-9995-74782771fe58_saved-image-file_00000000d034821193820189fda4f2b0.jpg HTTP/1.1" 304 -
+[2026-11-16 15:09:08,980] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/images/products/a8adda81-9836-4c35-931d-38395c3faa3c_iphone_img.png HTTP/1.1" 304 -
+[2026-11-16 15:09:08,981] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:08] "GET /static/images/products/9546425a-d865-11f1-b9b9-74782771fe58_saved-image-file_00000000ac20821198b0174fc32d68cd.jpg HTTP/1.1" 304 -
+[2026-11-16 15:09:10,547] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:10] "GET /products/13/details HTTP/1.1" 200 -
+[2026-11-16 15:09:10,557] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:10] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:09:10,559] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:10] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:09:10,561] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:10] "GET /static/images/products/b4f57bf6-d865-11f1-8dd4-74782771fe58_saved-image-file_000000005298821195dc143d9e0ec33c.jpg HTTP/1.1" 304 -
+[2026-11-16 15:09:12,754] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:12] "GET /cart HTTP/1.1" 200 -
+[2026-11-16 15:09:12,765] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:12] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:09:12,767] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:12] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:09:12,768] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:12] "GET /static/images/products/b4f57bf6-d865-11f1-8dd4-74782771fe58_saved-image-file_000000005298821195dc143d9e0ec33c.jpg HTTP/1.1" 304 -
+[2026-11-16 15:09:14,504] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:14] "GET /checkout HTTP/1.1" 200 -
+[2026-11-16 15:09:14,515] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:14] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:09:14,515] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:14] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:09:40,384] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:40] "POST /checkout HTTP/1.1" 200 -
+[2026-11-16 15:09:40,397] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:40] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:09:40,398] - INFO: 127.0.0.1 - - [16/Nov/2026 15:09:40] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:10:25,419] - INFO: 127.0.0.1 - - [16/Nov/2026 15:10:25] "POST /payment/failed HTTP/1.1" 500 -
+[2026-11-16 15:10:25,459] - INFO: 127.0.0.1 - - [16/Nov/2026 15:10:25] "GET /payment/failed?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[2026-11-16 15:10:25,486] - INFO: 127.0.0.1 - - [16/Nov/2026 15:10:25] "GET /payment/failed?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[2026-11-16 15:10:25,527] - INFO: 127.0.0.1 - - [16/Nov/2026 15:10:25] "GET /payment/failed?__debugger__=yes&cmd=resource&f=console.png&s=IMv58YbbqtpBWKIV1059 HTTP/1.1" 200 -
+[2026-11-16 15:10:25,537] - INFO: 127.0.0.1 - - [16/Nov/2026 15:10:25] "GET /payment/failed?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[2026-11-16 15:11:06,117] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:06] "GET /checkout HTTP/1.1" 200 -
+[2026-11-16 15:11:08,111] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:08] "POST /checkout HTTP/1.1" 302 -
+[2026-11-16 15:11:08,149] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:08] "GET /checkout HTTP/1.1" 200 -
+[2026-11-16 15:11:08,163] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:08] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:11:08,163] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:08] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:11:16,197] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /products HTTP/1.1" 200 -
+[2026-11-16 15:11:16,209] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:11:16,218] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:11:16,220] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/images/products/b4f57bf6-d865-11f1-8dd4-74782771fe58_saved-image-file_000000005298821195dc143d9e0ec33c.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:16,224] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/images/products/5809fce7-d864-11f1-849d-74782771fe58_saved-image-file_000000002fec821196721fd26fc076f9.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:16,229] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/images/products/930e9de3-d864-11f1-8200-74782771fe58_saved-image-file_0000000026608211a1cdaa9f036fd953.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:16,231] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/images/products/e75bdde3-d864-11f1-bf2e-74782771fe58_saved-image-file_00000000d2b08211b3705b490a6c8f01.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:16,237] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/images/products/ded17232-d865-11f1-9995-74782771fe58_saved-image-file_00000000d034821193820189fda4f2b0.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:16,243] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/images/products/a8adda81-9836-4c35-931d-38395c3faa3c_iphone_img.png HTTP/1.1" 304 -
+[2026-11-16 15:11:16,251] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:16] "GET /static/images/products/9546425a-d865-11f1-b9b9-74782771fe58_saved-image-file_00000000ac20821198b0174fc32d68cd.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:18,353] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:18] "GET /products/9/details HTTP/1.1" 200 -
+[2026-11-16 15:11:18,362] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:18] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:11:18,364] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:18] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:11:18,366] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:18] "GET /static/images/products/5809fce7-d864-11f1-849d-74782771fe58_saved-image-file_000000002fec821196721fd26fc076f9.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:20,195] - INFO: User redirect to products page
+[2026-11-16 15:11:20,196] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "POST /products/9/add-to-cart HTTP/1.1" 302 -
+[2026-11-16 15:11:20,292] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /products HTTP/1.1" 200 -
+[2026-11-16 15:11:20,313] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:11:20,314] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:11:20,317] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/images/products/b4f57bf6-d865-11f1-8dd4-74782771fe58_saved-image-file_000000005298821195dc143d9e0ec33c.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:20,323] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/images/products/5809fce7-d864-11f1-849d-74782771fe58_saved-image-file_000000002fec821196721fd26fc076f9.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:20,329] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/images/products/e75bdde3-d864-11f1-bf2e-74782771fe58_saved-image-file_00000000d2b08211b3705b490a6c8f01.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:20,329] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/images/products/930e9de3-d864-11f1-8200-74782771fe58_saved-image-file_0000000026608211a1cdaa9f036fd953.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:20,335] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/images/products/ded17232-d865-11f1-9995-74782771fe58_saved-image-file_00000000d034821193820189fda4f2b0.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:20,336] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/images/products/a8adda81-9836-4c35-931d-38395c3faa3c_iphone_img.png HTTP/1.1" 304 -
+[2026-11-16 15:11:20,342] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:20] "GET /static/images/products/9546425a-d865-11f1-b9b9-74782771fe58_saved-image-file_00000000ac20821198b0174fc32d68cd.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:23,249] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:23] "GET /cart HTTP/1.1" 200 -
+[2026-11-16 15:11:23,259] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:23] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:11:23,264] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:23] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:11:23,266] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:23] "GET /static/images/products/5809fce7-d864-11f1-849d-74782771fe58_saved-image-file_000000002fec821196721fd26fc076f9.jpg HTTP/1.1" 304 -
+[2026-11-16 15:11:25,191] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:25] "GET /checkout HTTP/1.1" 200 -
+[2026-11-16 15:11:25,202] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:25] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:11:25,204] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:25] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:11:49,098] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:49] "POST /checkout HTTP/1.1" 200 -
+[2026-11-16 15:11:49,113] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:49] "GET /static/css/style.css HTTP/1.1" 304 -
+[2026-11-16 15:11:49,114] - INFO: 127.0.0.1 - - [16/Nov/2026 15:11:49] "GET /static/css/user.css HTTP/1.1" 304 -
+[2026-11-16 15:13:45,279] - INFO: 127.0.0.1 - - [16/Nov/2026 15:13:45] "POST /payment/failed HTTP/1.1" 500 -
+[2026-11-16 15:13:45,295] - INFO: 127.0.0.1 - - [16/Nov/2026 15:13:45] "GET /payment/failed?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 304 -
+[2026-11-16 15:13:45,301] - INFO: 127.0.0.1 - - [16/Nov/2026 15:13:45] "GET /payment/failed?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 304 -
+[2026-11-16 15:13:45,317] - INFO: 127.0.0.1 - - [16/Nov/2026 15:13:45] "GET /payment/failed?__debugger__=yes&cmd=resource&f=console.png&s=IMv58YbbqtpBWKIV1059 HTTP/1.1" 304 -
