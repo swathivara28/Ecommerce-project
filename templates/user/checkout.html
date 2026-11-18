@@ -185,6 +185,45 @@
 
                 <div class="checkout-item">
 
+                    <!-- PRODUCT IMAGE -->
+
+                    <div class="checkout-item-image">
+
+                        {% if item.storedpath %}
+
+                            {% if item.storedpath.startswith('http') %}
+
+                                <!-- Supabase Image -->
+                                <img
+                                    src="{{ item.storedpath }}"
+                                    alt="{{ item.productname }}"
+                                    class="product-image"
+                                >
+
+                            {% else %}
+
+                                <!-- Old Local Image -->
+                                <img
+                                    src="{{ url_for('static', filename='images/products/' ~ item.imgname) }}"
+                                    alt="{{ item.productname }}"
+                                    class="product-image"
+                                >
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <div class="no-image">
+                                No Image
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- PRODUCT DETAILS -->
+
                     <div>
                         <strong>{{ item.productname }}</strong>
 
@@ -203,6 +242,8 @@
 
             </div>
 
+
+            <!-- PRICE SUMMARY -->
 
             <div class="summary-row">
                 <span>Subtotal</span>

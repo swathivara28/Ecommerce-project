@@ -1,4 +1,4 @@
-```html
+
 {% extends "base.html" %}
 
 {% block title %}Shopping Cart | ShopZone{% endblock %}
@@ -26,26 +26,43 @@
 
             <div class="cart-item">
 
+                <!-- PRODUCT IMAGE -->
                 <div class="cart-item-image">
 
                     {% if item.storedpath %}
 
-                    <img
-                        src="{{ url_for('static', filename=item.storedpath.replace('\\', '/').replace('static/', '')) }}"
-                        alt="{{ item.productname }}"
-                        class="product-image"
-                    >
+                        {% if item.storedpath.startswith('http') %}
+
+                            <!-- Supabase Image -->
+                            <img
+                                src="{{ item.storedpath }}"
+                                alt="{{ item.productname }}"
+                                class="product-image"
+                            >
+
+                        {% else %}
+
+                            <!-- Old Local Image -->
+                            <img
+                                src="{{ url_for('static', filename='images/products/' ~ item.imgname) }}"
+                                alt="{{ item.productname }}"
+                                class="product-image"
+                            >
+
+                        {% endif %}
 
                     {% else %}
 
-                    <div class="no-image">
-                        No Image
-                    </div>
+                        <div class="no-image">
+                            No Image
+                        </div>
 
                     {% endif %}
 
                 </div>
 
+
+                <!-- PRODUCT DETAILS -->
                 <div class="cart-item-details">
 
                     <h3>{{ item.productname }}</h3>
@@ -60,6 +77,8 @@
 
                 </div>
 
+
+                <!-- QUANTITY UPDATE -->
                 <div class="cart-item-quantity">
 
                     <form
@@ -89,6 +108,8 @@
 
                 </div>
 
+
+                <!-- SUBTOTAL -->
                 <div class="cart-item-subtotal">
 
                     <span>Subtotal</span>
@@ -99,6 +120,8 @@
 
                 </div>
 
+
+                <!-- REMOVE ITEM -->
                 <div class="cart-item-remove">
 
                     <form
@@ -120,6 +143,8 @@
 
         </div>
 
+
+        <!-- ORDER SUMMARY -->
         <div class="cart-summary">
 
             <h2>Order Summary</h2>
@@ -167,6 +192,7 @@
 
     {% else %}
 
+    <!-- EMPTY CART -->
     <div class="empty-cart">
 
         <h2>Your Cart is Empty</h2>
@@ -189,4 +215,3 @@
 </div>
 
 {% endblock %}
-```

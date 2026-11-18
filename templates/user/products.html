@@ -66,26 +66,41 @@
             
             
 
-            <div class="product-image">
+            
+<div class="product-image">
 
-                {% if product.storedpath %}
-                
-                    <img
-                        src="{{ url_for('static', 
-                        filename=product.storedpath.replace('\\', '/').replace('static/', '')) }}"
-                        alt="{{ product.productname }}"
-                        class="product-image"
-                        >
+    {% if product.storedpath %}
 
-                {% else %}
-                    <div class="no-image">
-                                No Image
-                            </div>
+        {% if product.storedpath.startswith('http') %}
 
-                {% endif %}
-                
+            <!-- Supabase Image -->
+            <img
+                src="{{ product.storedpath }}"
+                alt="{{ product.productname }}"
+                class="product-image"
+            >
 
-            </div>
+        {% else %}
+
+            <!-- Old Local Image -->
+            <img
+                src="{{ url_for('static', filename='images/products/' ~ product.imgname) }}"
+                alt="{{ product.productname }}"
+                class="product-image"
+            >
+
+        {% endif %}
+
+    {% else %}
+
+        <div class="no-image">
+            No Image
+        </div>
+
+    {% endif %}
+
+</div>
+
 
 
             <div class="product-info">

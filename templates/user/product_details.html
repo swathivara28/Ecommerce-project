@@ -1,7 +1,7 @@
-```html
+
 {% extends "base.html" %}
 
-{% block title %}{{ product.name }} | ShopZone{% endblock %}
+{% block title %}{{ product.productname }} | ShopZone{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
@@ -13,27 +13,43 @@
 
     <div class="product-details">
 
+        <!-- PRODUCT IMAGE -->
         <div class="product-details-image">
 
             {% if product.storedpath %}
-                
+
+                {% if product.storedpath.startswith('http') %}
+
+                    <!-- Supabase Image -->
                     <img
-                        src="{{ url_for('static', 
-                        filename=product.storedpath.replace('\\', '/').replace('static/', '')) }}"
+                        src="{{ product.storedpath }}"
                         alt="{{ product.productname }}"
                         class="product-image"
-                        >
+                    >
 
                 {% else %}
-                    <div class="no-image">
-                                No Image
-                            </div>
+
+                    <!-- Old Local Image -->
+                    <img
+                        src="{{ url_for('static', filename='images/products/' ~ product.imgname) }}"
+                        alt="{{ product.productname }}"
+                        class="product-image"
+                    >
 
                 {% endif %}
+
+            {% else %}
+
+                <div class="no-image">
+                    No Image
+                </div>
+
+            {% endif %}
 
         </div>
 
 
+        <!-- PRODUCT INFORMATION -->
         <div class="product-details-info">
 
             <p class="product-category">
@@ -53,57 +69,59 @@
 
             {% if product.quantity > 0 %}
 
-            <p class="stock available">
-                In Stock
-            </p>
+                <p class="stock available">
+                    In Stock
+                </p>
 
-            <p class="stock-count">
-                {{ product.quantity }} items available
-            </p>
+                <p class="stock-count">
+                    {{ product.quantity }} items available
+                </p>
 
 
-            <form
-                method="POST"
-                action="{{ url_for('add_to_cart', product_id=product.productid) }}"
-                class="add-cart-form"
-            >
-
-                <div class="quantity-group">
-
-                    <label for="quantity">
-                        Quantity
-                    </label>
-
-                    <input
-                        type="number"
-                        id="quantity"
-                        name="quantity"
-                        value="1"
-                        min="1"
-                        max="{{ product.quantity }}"
-                        required
-                    >
-
-                </div>
-
-                <button
-                    type="submit"
-                    class="btn btn-primary"
+                <!-- ADD TO CART FORM -->
+                <form
+                    method="POST"
+                    action="{{ url_for('add_to_cart', product_id=product.productid) }}"
+                    class="add-cart-form"
                 >
-                    Add to Cart
-                </button>
 
-            </form>
+                    <div class="quantity-group">
+
+                        <label for="quantity">
+                            Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            max="{{ product.quantity }}"
+                            required
+                        >
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Add to Cart
+                    </button>
+
+                </form>
 
             {% else %}
 
-            <p class="stock unavailable">
-                Out of Stock
-            </p>
+                <p class="stock unavailable">
+                    Out of Stock
+                </p>
 
             {% endif %}
 
 
+            <!-- PRODUCT ACTIONS -->
             <div class="product-actions">
 
                 <a
@@ -129,4 +147,3 @@
 </div>
 
 {% endblock %}
-

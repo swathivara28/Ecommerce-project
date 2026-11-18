@@ -11,10 +11,11 @@ from decimal import Decimal
 import razorpay
 from functools import wraps
 import logging
+from storage import upload_product_image
 
 app = Flask(__name__)
-
 app.secret_key = "Swathi@1234"
+
 
 # logging configuration
 logging.basicConfig(
@@ -111,10 +112,12 @@ def register():
             logging.warning("password miss match")
             return redirect(url_for('register'))
         
-        # generate hashpassword
-        logging.info('User email not exists and password also matched')
-        hash_password = bcrypt.hashpw(password=password.encode('utf-8'),
-                                      salt = bcrypt.gensalt(4))
+        # Generate hashed password
+        logging.info('User email not exists and password matched')
+        hash_password = bcrypt.hashpw(
+            password.encode('utf-8'),
+            bcrypt.gensalt()
+        ).decode('utf-8')
         
         # insert user data into users table
         status,msg = AuthQueries.createUserAccount(name=name,
@@ -147,14 +150,23 @@ def login():
             logging.warning(user)
             return redirect('/login')
                 
-        #verify hashpassword
-        verify_password_status = bcrypt.checkpw(password=password.encode('utf-8'),
-                                hashed_password=user['hashpassword'].encode('utf-8'))
-    
-        if  verify_password_status == False:
-            flash('Password incorrect','err')
-            logging.warning("password incorrect")
-            return redirect('/login')
+        # Verify password
+        stored_hash = user['hashpassword']
+
+        if isinstance(stored_hash, bytes):
+            stored_hash = stored_hash.decode('utf-8')
+
+        try:
+            verify_password_status = bcrypt.checkpw(
+            password.encode('utf-8'),
+            stored_hash.encode('utf-8'))
+        except (ValueError, TypeError):
+            flash("Invalid password hash. Please register again.", 'err')
+            return redirect(url_for('register'))
+
+        if not verify_password_status:
+            flash('Password incorrect', 'err')
+            return redirect(url_for('login'))
         # store user data in session
         
         session['username'] = user['username']
@@ -186,6 +198,7 @@ def product_details(product_id):
 
 
 
+
 @app.route('/cart')
 def cart():
 
@@ -198,27 +211,35 @@ def cart():
 
     if status:
 
+        cart_items = data
+
         subtotal = sum(
-            float(item['subtotal']) for item in data
+            (
+                Decimal(str(item['subtotal']))
+                for item in cart_items
+            ),
+            Decimal('0.00')
         )
 
-        shipping = subtotal * 0.0001
+        shipping = subtotal * Decimal('0.0001')
 
         total = subtotal + shipping
 
         return render_template(
             'user/cart.html',
-            cart_items=data,
+            cart_items=cart_items,
             subtotal=subtotal,
             shipping=shipping,
             total=total
         )
 
     flash(data, 'err')
+
     logging.warning(data)
     logging.info("User redirect to products page")
+
     return redirect(url_for('products'))
-    
+
 
 @app.route('/products/<int:product_id>/add-to-cart', methods=['POST'])
 def add_to_cart(product_id):
@@ -299,7 +320,7 @@ def checkout():
         for item in items:
             sub_total += item['subtotal']
         
-        shipping = sub_total * 0.01
+        shipping = sub_total * Decimal("0.01")
         total = sub_total + shipping
         session['total'] = total
         return render_template('user/checkout.html',
@@ -509,7 +530,7 @@ def profile():
 @app.route('/profile/edit',methods=['GET','POST'])
 @user_required
 def edit_profile():
-    from database.connection import DatabaseConnction
+    from database.connection import DatabaseConnection
     if request.method=='GET':
         _,user=UserQueries.getUser(session['id'])
         return render_template('user/edit_profile.html',user=user or {})
@@ -519,7 +540,7 @@ def edit_profile():
     gender=request.form.get('gender','').strip()
 
 
-    db=DatabaseConnction()
+    db=DatabaseConnection()
     cur=db.cursor()
     try:
         cur.execute('UPDATE users SET username=%s,phone=%s, dateofbirth=%s, gender=%s WHERE userid=%s',(name,phone,dob, gender, session['id']))
@@ -656,14 +677,14 @@ def admin_products():
     )
 
 # admin edit-product route
+
 @app.route('/admin/products/<int:product_id>/edit-product',
            methods=['GET', 'POST'])
+@admin_required
 def admin_edit_product(product_id):
 
-    # ================= GET METHOD =================
     if request.method == 'GET':
 
-        # Get existing product details
         status, product = AdminQueries.getAllProducts(
             product_id=product_id
         )
@@ -672,7 +693,6 @@ def admin_edit_product(product_id):
             flash("Product not found", 'err')
             return redirect(url_for('admin_products'))
 
-        # Get all categories
         category_status, categories = AdminQueries.getAllCategories()
 
         if not category_status:
@@ -685,127 +705,145 @@ def admin_edit_product(product_id):
             categories=categories
         )
 
-    # ================= POST METHOD =================
-    if request.method == 'POST':
+    # POST METHOD
 
-        # Get form data
-        product_name = request.form.get('name')
-        category = request.form.get('category')
-        price = request.form.get('price')
-        stock = request.form.get('stock')
-        description = request.form.get('description')
+    product_name = request.form.get('name')
+    category = request.form.get('category')
+    price = request.form.get('price')
+    stock = request.form.get('stock')
+    description = request.form.get('description')
 
-        # Get existing product details
-        status, product = AdminQueries.getAllProducts(
-            product_id=product_id
-        )
+    status, product = AdminQueries.getAllProducts(
+        product_id=product_id
+    )
 
-        if not status or not product:
-            flash("Product not found", 'err')
-            return redirect(url_for('admin_products'))
-
-        # Keep existing image details
-        img_name = product['imgname']
-        img_path = product['storedpath']
-
-        # Get uploaded image
-        image = request.files.get('image')
-
-        # Check new image uploaded or not
-        if image and image.filename:
-
-            secure_img_name = secure_filename(image.filename)
-
-            unique_img_name = str(uuid.uuid4()) + "_" + secure_img_name
-
-            img_path = os.path.join(
-                'static',
-                'images',
-                'products',
-                unique_img_name
-            )
-
-            image.save(img_path)
-
-            img_name = unique_img_name
-
-        # Prepare product data
-        product_data = (
-            product_name,
-            description,
-            category,
-            price,
-            stock,
-            img_name,
-            img_path
-        )
-
-        # Update product in database
-        status, msg = AdminQueries.updateProductRecord(
-            product_id=product_id,
-            product_data=product_data
-        )
-
-        if status:
-            flash("Product Updated Successfully", 'msg')
-        else:
-            flash(msg, 'err')
-
+    if not status or not product:
+        flash("Product not found", 'err')
         return redirect(url_for('admin_products'))
+
+    # Keep existing image details
+    img_name = product['imgname']
+    img_path = product['storedpath']
+
+    image = request.files.get('image')
+
+    # Upload new image to Supabase only if selected
+    if image and image.filename:
+
+        secure_img_name = secure_filename(image.filename)
+        unique_img_name = str(uuid.uuid4()) + "_" + secure_img_name
+
+        upload_status, result = upload_product_image(
+            image,
+            unique_img_name
+        )
+
+        if not upload_status:
+            flash("Image upload failed: " + str(result), 'err')
+            return redirect(url_for(
+                'admin_edit_product',
+                product_id=product_id
+            ))
+
+        img_name = unique_img_name
+        img_path = result  # Supabase public image URL
+
+    product_data = (
+        product_name,
+        description,
+        category,
+        price,
+        stock,
+        img_name,
+        img_path
+    )
+
+    status, msg = AdminQueries.updateProductRecord(
+        product_id=product_id,
+        product_data=product_data
+    )
+
+    flash(
+        "Product Updated Successfully" if status else msg,
+        'msg' if status else 'err'
+    )
+
+    return redirect(url_for('admin_products'))
 
 # admin add-product route
+
 @app.route('/admin/products/add-products', methods=['GET', 'POST'])
+@admin_required
 def admin_add_product():
+
     if request.method == 'GET':
         _, categories = AdminQueries.getAllCategories()
-        return render_template('admin/add_product.html',categories = categories)
-
-    if request.method == 'POST':
-
-        # Get form data
-        product_name = request.form.get('name')
-        category = request.form.get('category')
-        new_category = request.form.get('new_category')
-        price = request.form.get('price')
-        stock = request.form.get('stock')
-        description = request.form.get('description')
-        image = request.files.get('image')
-        # Check new category
-        if new_category and new_category.strip():
-            category = new_category.strip()
-
-        # Validate category
-        if not category:
-            flash("Please select or enter a category", 'err')
-            return redirect(url_for('admin_add_product'))
-
-        # Save image
-        img_name = image.filename
-        secure_img_name = secure_filename(img_name)
-        unique_img_name = str(uuid.uuid1()) + "_" + secure_img_name
-
-        img_path = os.path.join(
-            'static', 'images', 'products', unique_img_name
+        return render_template(
+            'admin/add_product.html',
+            categories=categories
         )
 
-        image.save(img_path)
+    # Get form data
+    product_name = request.form.get('name')
+    category = request.form.get('category')
+    new_category = request.form.get('new_category')
+    price = request.form.get('price')
+    stock = request.form.get('stock')
+    description = request.form.get('description')
+    image = request.files.get('image')
 
-        # Prepare product data
-        data = (
-            product_name,
-            description,
-            category,
-            price,
-            stock,
-            unique_img_name,
-            img_path
-        )
-        # Insert product
-        status, msg = AdminQueries.insertProductRecord(product_data=data)
+    # Check new category
+    if new_category and new_category.strip():
+        category = new_category.strip()
 
-        flash(msg, 'msg' if status else 'err')
+    if not category:
+        flash("Please select or enter a category", 'err')
+        return redirect(url_for('admin_add_product'))
 
-        return redirect(url_for('admin_products'))
+    # Check image
+    if not image or not image.filename:
+        flash("Please select a product image", 'err')
+        return redirect(url_for('admin_add_product'))
+
+    # Create unique image filename
+    secure_img_name = secure_filename(image.filename)
+    unique_img_name = str(uuid.uuid4()) + "_" + secure_img_name
+
+    # Upload image to Supabase Storage
+    upload_status, image_url = upload_product_image(
+        image,
+        unique_img_name
+    )
+
+    if not upload_status:
+        flash(f"Image upload failed: {image_url}", 'err')
+        logging.error(f"Supabase image upload failed: {image_url}")
+        return redirect(url_for('admin_add_product'))
+
+    # Store Supabase public URL in database
+    img_name = unique_img_name
+    img_path = image_url
+
+    # Prepare product data
+    data = (
+        product_name,
+        description,
+        category,
+        price,
+        stock,
+        img_name,
+        img_path
+    )
+
+    # Insert product
+    status, msg = AdminQueries.insertProductRecord(
+        product_data=data
+    )
+
+    flash(msg, 'msg' if status else 'err')
+
+    return redirect(url_for('admin_products'))
+
         
 # ------------------------------------------------------------
 # CATEGORIES

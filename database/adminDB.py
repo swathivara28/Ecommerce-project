@@ -1,145 +1,75 @@
+
 from database.connection import DatabaseConnection
+from psycopg2.extras import RealDictCursor
+
 
 class AdminQueries:
+
+    # ---------------------------------------------------------
+    # ADD PRODUCT
+    # ---------------------------------------------------------
+
     @staticmethod
-    def insertProductRecord(product_data:tuple[str|int]):
-        cursor = db_config = None
+    def insertProductRecord(product_data: tuple):
+
+        db_config = None
+        cursor = None
+
         try:
             db_config = DatabaseConnection()
             cursor = db_config.cursor()
-
-            query= """insert into products(productname,description,category,saleprice,quantity,imgname,storedpath)
-            values(%s,%s,%s,%s,%s,%s,%s)"""
-            cursor.execute(query,product_data)
-            db_config.commit()
-            return True, "product Added"
-        except Exception as e:
-            return False,f"Something wrong in database/adminDB.AdminQueries.insertProductRecord():{e}"
-        finally:
-            if cursor:
-                cursor.close()
-            if db_config:
-                db_config.close()
-
-    
-    
-    @staticmethod
-    def getAllProducts(product_name: str = None,
-                   product_id: int = None,
-                   category: str = None,
-                   page_no: int = 1,
-                   per_page: int = 7):
-        cursor = db_config = None
-        try:
-            db_config = DatabaseConnection()
-            cursor = db_config.cursor(dictionary=True)
-
-            query = """SELECT * FROM products WHERE 1=1"""
-            values = []
-
-            if product_name:
-                query += " AND productname LIKE %s"
-                values.append(f"%{product_name}%")
-
-            if category:
-                query += " AND category = %s"
-                values.append(category)
-
-            if product_id:
-                query += " AND productid = %s"
-                values.append(product_id)
-
-            # Pagination
-            offset = (page_no - 1) * per_page
-
-            query += " ORDER BY updated_at DESC LIMIT %s OFFSET %s"
-
-            values.extend([per_page, offset])
-
-            cursor.execute(query, values)
-
-            data = cursor.fetchone() if product_id else cursor.fetchall()
-
-            return True, data
-
-        except Exception as e:
-            return False, f"Something wrong in database/adminDB.AdminQueries.getAllProducts(): {e}"
-
-        finally:
-            if cursor:
-                cursor.close()
-
-            if db_config:
-                db_config.close()
-
-
-    @staticmethod
-    def getAllCategories():
-        cursor = db_config = None
-        try:
-            db_config = DatabaseConnection()
-            cursor = db_config.cursor(dictionary=True)
 
             query = """
-            SELECT DISTINCT category
-            FROM products
-            WHERE category IS NOT NULL
-            AND TRIM(category) != ''
-            ORDER BY category ASC
+                INSERT INTO products(
+                    productname,
+                    description,
+                    category,
+                    saleprice,
+                    quantity,
+                    imgname,
+                    storedpath
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
 
-            cursor.execute(query)
-            data = cursor.fetchall()
-
-            return True, data
-
-        except Exception as e:
-            return False, f"Something wrong in getAllCategories(): {e}"
-
-        finally:
-            if cursor:
-                cursor.close()
-
-            if db_config:
-                db_config.close()
-
-    from database.connection import DatabaseConnection
-
-class AdminQueries:
-    @staticmethod
-    def insertProductRecord(product_data:tuple[str|int]):
-        cursor = db_config = None
-        try:
-            db_config = DatabaseConnection()
-            cursor = db_config.cursor()
-
-            query= """insert into products(productname,description,category,saleprice,quantity,imgname,storedpath)
-            values(%s,%s,%s,%s,%s,%s,%s)"""
-            cursor.execute(query,product_data)
+            cursor.execute(query, product_data)
             db_config.commit()
-            return True, "product Added"
+
+            return True, "Product Added"
+
         except Exception as e:
-            return False,f"Something wrong in database/adminDB.AdminQueries.insertProductRecord():{e}"
+            if db_config:
+                db_config.rollback()
+
+            return False, f"Something wrong in insertProductRecord(): {e}"
+
         finally:
             if cursor:
                 cursor.close()
             if db_config:
                 db_config.close()
 
-    
-    
+    # ---------------------------------------------------------
+    # GET ALL PRODUCTS
+    # ---------------------------------------------------------
+
     @staticmethod
-    def getAllProducts(product_name: str = None,
-                   product_id: int = None,
-                   category: str = None,
-                   page_no: int = 1,
-                   per_page: int = 7):
-        cursor = db_config = None
+    def getAllProducts(
+        product_name: str = None,
+        product_id: int = None,
+        category: str = None,
+        page_no: int = 1,
+        per_page: int = 7
+    ):
+
+        db_config = None
+        cursor = None
+
         try:
             db_config = DatabaseConnection()
-            cursor = db_config.cursor(dictionary=True)
+            cursor = db_config.cursor(cursor_factory=RealDictCursor)
 
-            query = """SELECT * FROM products WHERE 1=1"""
+            query = "SELECT * FROM products WHERE 1=1"
             values = []
 
             if product_name:
@@ -154,37 +84,41 @@ class AdminQueries:
                 query += " AND productid = %s"
                 values.append(product_id)
 
-            # Pagination
             offset = (page_no - 1) * per_page
 
             query += " ORDER BY updated_at DESC LIMIT %s OFFSET %s"
 
             values.extend([per_page, offset])
 
-            cursor.execute(query, values)
+            cursor.execute(query, tuple(values))
 
             data = cursor.fetchone() if product_id else cursor.fetchall()
 
             return True, data
 
         except Exception as e:
-            return False, f"Something wrong in database/adminDB.AdminQueries.getAllProducts(): {e}"
+            return False, f"Error in getAllProducts(): {e}"
 
         finally:
             if cursor:
                 cursor.close()
-
             if db_config:
                 db_config.close()
 
+    # ---------------------------------------------------------
+    # GET ALL CATEGORIES
+    # ---------------------------------------------------------
 
     @staticmethod
     def getAllCategories():
-        cursor = db_config = None
+
+        db_config = None
+        cursor = None
+
         try:
             db_config = DatabaseConnection()
-            cursor = db_config.cursor()
-    
+            cursor = db_config.cursor(cursor_factory=RealDictCursor)
+
             query = """
                 SELECT DISTINCT category
                 FROM products
@@ -192,38 +126,45 @@ class AdminQueries:
                 AND TRIM(category) != ''
                 ORDER BY category ASC
             """
-    
+
             cursor.execute(query)
             data = cursor.fetchall()
+
             return True, data
-    
+
         except Exception as e:
-            return False, f"Error: {e}"
-    
+            return False, f"Error in getAllCategories(): {e}"
+
         finally:
             if cursor:
                 cursor.close()
             if db_config:
                 db_config.close()
 
+    # ---------------------------------------------------------
+    # UPDATE PRODUCT RECORD
+    # ---------------------------------------------------------
+
     @staticmethod
     def updateProductRecord(product_id, product_data: tuple):
-        cursor = db_config = None
+
+        db_config = None
+        cursor = None
 
         try:
             db_config = DatabaseConnection()
             cursor = db_config.cursor()
 
             query = """
-            UPDATE products
-            SET productname = %s,
-                description = %s,
-                category = %s,
-                saleprice = %s,
-                quantity = %s,
-                imgname = %s,
-                storedpath = %s
-            WHERE productid = %s
+                UPDATE products
+                SET productname = %s,
+                    description = %s,
+                    category = %s,
+                    saleprice = %s,
+                    quantity = %s,
+                    imgname = %s,
+                    storedpath = %s
+                WHERE productid = %s
             """
 
             cursor.execute(query, product_data + (product_id,))
@@ -232,43 +173,67 @@ class AdminQueries:
             return True, "Product Updated Successfully"
 
         except Exception as e:
-            return False, f"Something wrong in AdminQueries.updateProductRecord(): {e}"
+            if db_config:
+                db_config.rollback()
+
+            return False, f"Error in updateProductRecord(): {e}"
 
         finally:
             if cursor:
                 cursor.close()
             if db_config:
-                db_config.close() 
+                db_config.close()
+
+    # ---------------------------------------------------------
+    # GET ALL USERS
+    # ---------------------------------------------------------
 
     @staticmethod
     def getAllUsers():
-                cursor = db_config = None
-                try:
-                    db_config = DatabaseConnection()
-                    cursor = db_config.cursor(dictionary=True)
-        
-                    query= """select * from users;"""
-                    cursor.execute(query)
-                    data = cursor.fetchall()
-                    return True, data
-                except Exception as e:
-                    return False,f"Something wrong in database/adminDB.AdminQueries.getAllusers():{e}"
-                finally:
-                    if cursor:
-                        cursor.close()
-                    if db_config:
-                        db_config.close()
 
-
-    @staticmethod
-    def getProductsCount(product_name=None, category=None):
-        cursor = db_config = None
+        db_config = None
+        cursor = None
 
         try:
             db_config = DatabaseConnection()
-            cursor = db_config.cursor(dictionary=True)
+            cursor = db_config.cursor(cursor_factory=RealDictCursor)
 
-            query = "SELECT COUNT(*) AS total FROM products WHERE 1=1"
+            query = "SELECT * FROM users"
+
+            cursor.execute(query)
+            data = cursor.fetchall()
+
+            return True, data
+
+        except Exception as e:
+            return False, f"Error in getAllUsers(): {e}"
+
+        finally:
+            if cursor:
+                cursor.close()
+            if db_config:
+                db_config.close()
+
+    # ---------------------------------------------------------
+    # GET PRODUCTS COUNT
+    # ---------------------------------------------------------
+
+    @staticmethod
+    def getProductsCount(product_name=None, category=None):
+
+        db_config = None
+        cursor = None
+
+        try:
+            db_config = DatabaseConnection()
+            cursor = db_config.cursor(cursor_factory=RealDictCursor)
+
+            query = """
+                SELECT COUNT(*) AS total
+                FROM products
+                WHERE 1=1
+            """
+
             values = []
 
             if product_name:
@@ -279,7 +244,7 @@ class AdminQueries:
                 query += " AND category = %s"
                 values.append(category)
 
-            cursor.execute(query, values)
+            cursor.execute(query, tuple(values))
             data = cursor.fetchone()
 
             return True, data['total']
@@ -293,59 +258,83 @@ class AdminQueries:
             if db_config:
                 db_config.close()
 
+    # ---------------------------------------------------------
+    # UPDATE PRODUCT DATA
+    # ---------------------------------------------------------
+
     @staticmethod
     def updateProductData(product_data, img=False):
-        """Compatibility method for code that uses the older tuple format."""
-        db = DatabaseConnection()
-        cur = db.cursor()
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor()
+
             if img:
                 query = """
                     UPDATE products
-                    SET productname=%s,
-                        description=%s,
-                        category=%s,
-                        quantity=%s,
-                        saleprice=%s,
-                        imgname=%s,
-                        storedpath=%s
-                    WHERE productid=%s
+                    SET productname = %s,
+                        description = %s,
+                        category = %s,
+                        quantity = %s,
+                        saleprice = %s,
+                        imgname = %s,
+                        storedpath = %s
+                    WHERE productid = %s
                 """
             else:
                 query = """
                     UPDATE products
-                    SET productname=%s,
-                        description=%s,
-                        category=%s,
-                        quantity=%s,
-                        saleprice=%s
-                    WHERE productid=%s
+                    SET productname = %s,
+                        description = %s,
+                        category = %s,
+                        quantity = %s,
+                        saleprice = %s
+                    WHERE productid = %s
                 """
 
             cur.execute(query, product_data)
             db.commit()
+
             return True, "Product Updated"
 
         except Exception as e:
-            db.rollback()
+            if db:
+                db.rollback()
+
             return False, f"Unable to update product: {e}"
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # DELETE PRODUCT (SOFT DELETE)
+    # ---------------------------------------------------------
 
     @staticmethod
     def deleteProduct(productid):
-        # Soft delete: order_details may still refer to this product.
-        db = DatabaseConnection()
-        cur = db.cursor()
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor()
+
             cur.execute(
-                "UPDATE products SET is_active=FALSE WHERE productid=%s",
+                """
+                UPDATE products
+                SET is_active = FALSE
+                WHERE productid = %s
+                """,
                 (productid,)
             )
+
             db.commit()
 
             if cur.rowcount == 0:
@@ -354,65 +343,124 @@ class AdminQueries:
             return True, "Product deactivated"
 
         except Exception as e:
-            db.rollback()
+            if db:
+                db.rollback()
+
             return False, f"Unable to deactivate product: {e}"
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # DEACTIVATE PRODUCT
+    # ---------------------------------------------------------
 
     @staticmethod
     def deactivateProduct(product_id):
-        db = DatabaseConnection()
-        cur = db.cursor()
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor()
+
             cur.execute(
-                "UPDATE products SET is_active=FALSE WHERE productid=%s",
+                """
+                UPDATE products
+                SET is_active = FALSE
+                WHERE productid = %s
+                """,
                 (product_id,)
             )
+
             db.commit()
+
             return cur.rowcount > 0
 
         except Exception as e:
-            db.rollback()
+            if db:
+                db.rollback()
+
             print("DEACTIVATE PRODUCT ERROR:", e)
             return False
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # ACTIVATE PRODUCT
+    # ---------------------------------------------------------
 
     @staticmethod
     def activateProduct(product_id):
-        db = DatabaseConnection()
-        cur = db.cursor()
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor()
+
             cur.execute(
-                "UPDATE products SET is_active=TRUE WHERE productid=%s",
+                """
+                UPDATE products
+                SET is_active = TRUE
+                WHERE productid = %s
+                """,
                 (product_id,)
             )
+
             db.commit()
+
             return cur.rowcount > 0
 
         except Exception as e:
-            db.rollback()
+            if db:
+                db.rollback()
+
             print("ACTIVATE PRODUCT ERROR:", e)
             return False
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # CHANGE PRODUCT STATUS
+    # ---------------------------------------------------------
 
     @staticmethod
     def chengeProductActivateStatus(product_id, active=False):
+
         if active:
             success = AdminQueries.activateProduct(product_id)
-            return success, "Product activated" if success else "Unable to activate product"
+
+            return (
+                success,
+                "Product activated" if success
+                else "Unable to activate product"
+            )
 
         success = AdminQueries.deactivateProduct(product_id)
-        return success, "Product deactivated" if success else "Unable to deactivate product"
+
+        return (
+            success,
+            "Product deactivated" if success
+            else "Unable to deactivate product"
+        )
+
+    # ---------------------------------------------------------
+    # GET PRODUCTS WITH FILTERS AND PAGINATION
+    # ---------------------------------------------------------
 
     @staticmethod
     def getProducts(
@@ -425,31 +473,44 @@ class AdminQueries:
         page=1,
         per_page=10
     ):
-        db = DatabaseConnection()
-        cur = db.cursor(dictionary=True)
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor(cursor_factory=RealDictCursor)
+
             query = "SELECT * FROM products WHERE 1=1"
             params = []
 
             if search:
-                query += " AND (productname LIKE %s OR description LIKE %s)"
+                query += """
+                    AND (
+                        productname LIKE %s
+                        OR description LIKE %s
+                    )
+                """
+
                 search_value = f"%{search}%"
                 params.extend([search_value, search_value])
 
             if category:
-                query += " AND category=%s"
+                query += " AND category = %s"
                 params.append(category)
 
             if status == 'active':
-                query += " AND is_active=TRUE"
+                query += " AND is_active = TRUE"
+
             elif status == 'inactive':
-                query += " AND is_active=FALSE"
+                query += " AND is_active = FALSE"
 
             if stock == 'available':
                 query += " AND quantity > 0"
+
             elif stock == 'out':
                 query += " AND quantity = 0"
+
             elif stock == 'low':
                 query += " AND quantity > 0 AND quantity <= 5"
 
@@ -461,7 +522,13 @@ class AdminQueries:
                 query += " AND saleprice <= %s"
                 params.append(max_price)
 
-            count_query = f"SELECT COUNT(*) AS total FROM ({query}) AS filtered_products"
+            count_query = """
+                SELECT COUNT(*) AS total
+                FROM (
+                    {}
+                ) AS filtered_products
+            """.format(query)
+
             cur.execute(count_query, tuple(params))
             total = cur.fetchone()['total']
 
@@ -469,7 +536,12 @@ class AdminQueries:
                 page = 1
 
             offset = (page - 1) * per_page
-            query += " ORDER BY productid DESC LIMIT %s OFFSET %s"
+
+            query += """
+                ORDER BY productid DESC
+                LIMIT %s OFFSET %s
+            """
+
             params.extend([per_page, offset])
 
             cur.execute(query, tuple(params))
@@ -478,10 +550,15 @@ class AdminQueries:
             cur.execute("""
                 SELECT DISTINCT category
                 FROM products
-                WHERE category IS NOT NULL AND category != ''
+                WHERE category IS NOT NULL
+                AND category != ''
                 ORDER BY category
             """)
-            categories = [row['category'] for row in cur.fetchall()]
+
+            categories = [
+                row['category']
+                for row in cur.fetchall()
+            ]
 
             return {
                 'products': products,
@@ -491,6 +568,7 @@ class AdminQueries:
 
         except Exception as e:
             print("GET PRODUCTS ERROR:", e)
+
             return {
                 'products': [],
                 'total': 0,
@@ -498,8 +576,10 @@ class AdminQueries:
             }
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
 
     # ---------------------------------------------------------
     # USERS
@@ -507,10 +587,14 @@ class AdminQueries:
 
     @staticmethod
     def getUsers():
-        db = DatabaseConnection()
-        cur = db.cursor(dictionary=True)
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor(cursor_factory=RealDictCursor)
+
             cur.execute("""
                 SELECT
                     userid,
@@ -523,66 +607,95 @@ class AdminQueries:
                 FROM users
                 ORDER BY created_at DESC
             """)
+
             return True, cur.fetchall()
 
         except Exception as e:
             return False, f"Unable to get users: {e}"
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # GET USER BY ID
+    # ---------------------------------------------------------
 
     @staticmethod
     def getUserById(user_id):
-        db = DatabaseConnection()
-        cur = db.cursor(dictionary=True)
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor(cursor_factory=RealDictCursor)
+
             cur.execute("""
-                SELECT
-                    userid AS id,
-                    username,
-                    email,
-                    phone,
-                    role,
-                    is_active,
-                    created_at
-                FROM users
-                WHERE userid=%s
+            SELECT
+                userid AS id,
+                username AS name,
+                username,
+                email,
+                phone,
+                role,
+                is_active,
+                created_at
+            FROM users
+            WHERE userid = %s
             """, (user_id,))
+
             user = cur.fetchone()
+
             return (True, user) if user else (False, "User not found")
 
         except Exception as e:
             return False, str(e)
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # GET USER DETAILS
+    # ---------------------------------------------------------
 
     @staticmethod
     def getUserDetails(user_id):
+
         return AdminQueries.getUserById(user_id)
+
+    # ---------------------------------------------------------
+    # UPDATE USER
+    # ---------------------------------------------------------
 
     @staticmethod
     def updateUser(user_id, data):
+
         if data.get('role') not in {'user', 'admin'}:
             return False, 'Invalid role'
 
         if not data.get('username') or not data.get('email'):
             return False, 'Name and email are required'
 
-        db = DatabaseConnection()
-        cur = db.cursor()
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor()
+
             cur.execute("""
                 UPDATE users
-                SET username=%s,
-                    email=%s,
-                    phone=%s,
-                    role=%s
-                WHERE userid=%s
+                SET username = %s,
+                    email = %s,
+                    phone = %s,
+                    role = %s
+                WHERE userid = %s
             """, (
                 data['username'],
                 data['email'],
@@ -596,15 +709,20 @@ class AdminQueries:
                 return False, 'User not found'
 
             db.commit()
+
             return True, 'User updated successfully'
 
         except Exception as e:
-            db.rollback()
+            if db:
+                db.rollback()
+
             return False, str(e)
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
 
     # ---------------------------------------------------------
     # ORDERS
@@ -612,14 +730,17 @@ class AdminQueries:
 
     @staticmethod
     def getOrders(search=None, status=None):
-        """Returns (success, list_of_orders), matching the existing routes."""
-        db = DatabaseConnection()
-        cur = db.cursor(dictionary=True)
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor(cursor_factory=RealDictCursor)
+
             query = """
                 SELECT
-                    o.orderid ,as id
+                    o.orderid AS id,
                     o.userid,
                     u.username AS customer_name,
                     u.email AS customer_email,
@@ -635,34 +756,44 @@ class AdminQueries:
                     COALESCE(od.item_count, 0) AS item_count
 
                 FROM orders o
-                JOIN users u ON u.userid = o.userid
-                LEFT JOIN payments p ON p.orderid = o.orderid
+
+                JOIN users u
+                    ON u.userid = o.userid
+
+                LEFT JOIN payments p
+                    ON p.orderid = o.orderid
+
                 LEFT JOIN (
                     SELECT orderid, COUNT(*) AS item_count
                     FROM order_details
                     GROUP BY orderid
-                ) od ON od.orderid = o.orderid
+                ) od
+                    ON od.orderid = o.orderid
+
                 WHERE 1=1
             """
+
             values = []
 
             if search:
                 query += """
                     AND (
-                        CAST(o.orderid AS CHAR) LIKE %s
+                        CAST(o.orderid AS TEXT) LIKE %s
                         OR u.username LIKE %s
                         OR u.email LIKE %s
                     )
                 """
+
                 values.extend([f"%{search}%"] * 3)
 
             if status:
-                query += " AND o.status=%s"
+                query += " AND o.status = %s"
                 values.append(status.lower())
 
             query += " ORDER BY o.created_at DESC"
 
             cur.execute(query, tuple(values))
+
             return True, cur.fetchall()
 
         except Exception as e:
@@ -670,15 +801,25 @@ class AdminQueries:
             return False, str(e)
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # GET ORDER BY ID
+    # ---------------------------------------------------------
 
     @staticmethod
     def getOrderById(order_id):
-        db = DatabaseConnection()
-        cur = db.cursor(dictionary=True)
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor(cursor_factory=RealDictCursor)
+
             query = """
                 SELECT
                     o.orderid,
@@ -697,12 +838,20 @@ class AdminQueries:
                     p.amount AS payment_amount,
                     p.razorpay_order_id,
                     p.razorpay_payment_id
+
                 FROM orders o
-                LEFT JOIN users u ON u.userid = o.userid
-                LEFT JOIN payments p ON p.orderid = o.orderid
-                WHERE o.orderid=%s
+
+                LEFT JOIN users u
+                    ON u.userid = o.userid
+
+                LEFT JOIN payments p
+                    ON p.orderid = o.orderid
+
+                WHERE o.orderid = %s
             """
+
             cur.execute(query, (order_id,))
+
             return cur.fetchone()
 
         except Exception as e:
@@ -710,15 +859,25 @@ class AdminQueries:
             return None
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # GET ORDER ITEMS
+    # ---------------------------------------------------------
 
     @staticmethod
     def getOrderItems(order_id):
-        db = DatabaseConnection()
-        cur = db.cursor(dictionary=True)
+
+        db = None
+        cur = None
 
         try:
+            db = DatabaseConnection()
+            cur = db.cursor(cursor_factory=RealDictCursor)
+
             query = """
                 SELECT
                     od.orderid,
@@ -730,11 +889,17 @@ class AdminQueries:
                     p.category,
                     p.imgname,
                     p.storedpath
+
                 FROM order_details od
-                LEFT JOIN products p ON p.productid = od.productid
-                WHERE od.orderid=%s
+
+                LEFT JOIN products p
+                    ON p.productid = od.productid
+
+                WHERE od.orderid = %s
             """
+
             cur.execute(query, (order_id,))
+
             return cur.fetchall()
 
         except Exception as e:
@@ -742,26 +907,51 @@ class AdminQueries:
             return []
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()
+
+    # ---------------------------------------------------------
+    # GET COMPLETE ORDER DETAILS
+    # ---------------------------------------------------------
 
     @staticmethod
     def getOrderDetails(order_id):
+
         order = AdminQueries.getOrderById(order_id)
 
         if not order:
             return False, 'Order not found'
 
         items = AdminQueries.getOrderItems(order_id)
+
         order['items'] = items
-        order['subtotal'] = sum(float(item['subtotal']) for item in items)
-        order['shipping'] = round(float(order['total']) - order['subtotal'], 2)
+
+        order['subtotal'] = sum(
+            float(item['subtotal'])
+            for item in items
+        )
+
+        order['shipping'] = round(
+            float(order['total']) - order['subtotal'],
+            2
+        )
 
         return True, order
 
+    # ---------------------------------------------------------
+    # UPDATE ORDER STATUS
+    # ---------------------------------------------------------
+
     @staticmethod
     def updateOrderStatus(order_id, status):
+
+        db = None
+        cur = None
+
         status = status.lower()
+
         allowed_statuses = {
             'pending',
             'shipped',
@@ -772,16 +962,20 @@ class AdminQueries:
         if status not in allowed_statuses:
             return False
 
-        db = DatabaseConnection()
-        cur = db.cursor(dictionary=True)
-
         try:
-            db.start_transaction()
+            db = DatabaseConnection()
+            cur = db.cursor(cursor_factory=RealDictCursor)
 
-            cur.execute(
-                "SELECT status FROM orders WHERE orderid=%s FOR UPDATE",
-                (order_id,)
-            )
+            # PostgreSQL automatically starts a transaction
+            # when the first SQL statement is executed.
+
+            cur.execute("""
+                SELECT status
+                FROM orders
+                WHERE orderid = %s
+                FOR UPDATE
+            """, (order_id,))
+
             order = cur.fetchone()
 
             if not order:
@@ -793,41 +987,50 @@ class AdminQueries:
                 return False
 
             if status == 'cancelled':
-                # Restore stock once, while the order row is locked.
+
                 cur.execute("""
                     SELECT productid, quantity
                     FROM order_details
-                    WHERE orderid=%s
+                    WHERE orderid = %s
                 """, (order_id,))
 
                 for item in cur.fetchall():
+
                     cur.execute("""
                         UPDATE products
                         SET quantity = quantity + %s
                         WHERE productid = %s
-                    """, (item['quantity'], item['productid']))
+                    """, (
+                        item['quantity'],
+                        item['productid']
+                    ))
 
-                # Only pending payments are marked failed.
-                # Paid Razorpay payments require a separate refund process.
                 cur.execute("""
                     UPDATE payments
-                    SET status='failed'
-                    WHERE orderid=%s AND status='pending'
+                    SET status = 'failed'
+                    WHERE orderid = %s
+                    AND status = 'pending'
                 """, (order_id,))
 
-            cur.execute(
-                "UPDATE orders SET status=%s WHERE orderid=%s",
-                (status, order_id)
-            )
+            cur.execute("""
+                UPDATE orders
+                SET status = %s
+                WHERE orderid = %s
+            """, (status, order_id))
 
             db.commit()
+
             return True
 
         except Exception as e:
-            db.rollback()
+            if db:
+                db.rollback()
+
             print("UPDATE ORDER STATUS ERROR:", e)
             return False
 
         finally:
-            cur.close()
-            db.close()
+            if cur:
+                cur.close()
+            if db:
+                db.close()

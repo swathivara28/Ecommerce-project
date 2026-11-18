@@ -295,26 +295,40 @@
                     </td>
 
 
-                    <!-- IMAGE -->
+                    
+<!-- IMAGE -->
 
-                   <td>
-                        {% if product.storedpath %}
+<td>
+    {% if product.storedpath %}
 
-                            <img
-                                src="{{ url_for('static', 
-                                filename=product.storedpath.replace('\\', '/').replace('static/', '')) }}"
-                                alt="{{ product.productname }}"
-                                class="product-image"
-                            >
+        {% if product.storedpath.startswith('http') %}
 
-                        {% else %}
+            <!-- Supabase Image -->
+            <img
+                src="{{ product.storedpath }}"
+                alt="{{ product.productname }}"
+                class="product-image"
+            >
 
-                            <div class="no-image">
-                                No Image
-                            </div>
+        {% else %}
 
-                        {% endif %}
-                    </td>
+            <!-- Old Local Image -->
+            <img
+                src="{{ url_for('static', filename='images/products/' ~ product.imgname) }}"
+                alt="{{ product.productname }}"
+                class="product-image"
+            >
+
+        {% endif %}
+
+    {% else %}
+
+        <div class="no-image">
+            No Image
+        </div>
+
+    {% endif %}
+</td>
 
 
                     <!-- PRODUCT NAME -->

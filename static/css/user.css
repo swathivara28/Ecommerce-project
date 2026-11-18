@@ -1568,3 +1568,16 @@ margin-top: 5px;
 }
 
 }
+.checkout-item-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.checkout-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
