@@ -174,10 +174,10 @@ def login():
         session['id'] = user['userid']
         session['email'] = user['email']
         if user['role'] == 'admin':
-            logging.info(f'{user['username']} user entering into admin dashboard page')
+            logging.info(f"{user['username']} user entering into admin dashboard page")
             return redirect(url_for('admin_dashboard'))
         else:
-            logging.info(f'{user['username']} user entering into admin products page')
+            logging.info(f"{user['username']} user entering into admin products page")
             return redirect(url_for('products'))
 
 
@@ -459,18 +459,45 @@ def payment_success():
     session.pop('pending_order_id',None)
     return render_template('user/payment_success.html',order=order if ok else None)
 
-@app.route('/payment/failed',methods=['GET','POST'])
+@app.route('/payment/failed', methods=['GET', 'POST'])
 @user_required
 def payment_failed():
+
     if request.method == 'POST':
-        oid=request.form.get('order_id') or session.get('pending_order_id')
-        reason=request.form.get('reason','Payment failed')
+
+        # Get our internal database order ID from session
+        oid = session.get('pending_order_id')
+
+        reason = request.form.get('reason', 'Payment failed')
+
         if oid:
-            ok,msg=UserQueries.failPayment(session['id'],int(oid),reason)
-            flash(msg,'msg' if ok else 'err')
-        session.pop('pending_order_id',None)
+            try:
+                oid = int(oid)
+
+                ok, msg = UserQueries.failPayment(
+                    session['id'],
+                    oid,
+                    reason
+                )
+
+                flash(msg, 'msg' if ok else 'err')
+
+            except (ValueError, TypeError):
+                app.logger.exception("Invalid internal order ID")
+
+                flash("Invalid order information.", 'err')
+        else:
+            flash("Pending order not found.", 'err')
+
+        session.pop('pending_order_id', None)
+
         return redirect(url_for('payment_failed'))
-    return render_template('user/payment_failed.html',message=request.args.get('message'))
+
+    return render_template(
+        'user/payment_failed.html',
+        message=request.args.get('message')
+    )
+
 
 @app.route('/payment/cancel',methods=['POST'])
 @user_required
